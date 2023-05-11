@@ -3,13 +3,16 @@ import LineGraph from '../graphs/LineGraph';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 
-const Precipitation = () => {
+const Precipitation = ({ startDate, endDate }) => {
     const [data, setData] = useState([])
     const {baseUrl, authToken, logoutUser} = useContext(AuthContext);
 
     useEffect(() => {
         axios.get(baseUrl + '/graph/precipitation', {headers: {
             Authorization: `Bearer ${authToken}`,
+          }, params: {
+            startDate,
+            endDate
           }})
             .then(res => {
                 console.log(JSON.parse(res.data))
@@ -19,7 +22,7 @@ const Precipitation = () => {
                 // logoutUser()
             })
 
-    }, [])
+    }, [startDate, endDate])
 
     return (
         <div className='w-1/2 h-1/2 border border-2' draggable>
